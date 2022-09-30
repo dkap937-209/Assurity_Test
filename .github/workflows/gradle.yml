@@ -13,3 +13,7 @@ jobs:
           cache: gradle
       - name: Build
         run: ./gradlew build
+      - name: Test
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: check
