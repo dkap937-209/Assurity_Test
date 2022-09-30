@@ -81,4 +81,35 @@ public class APITest {
         fail("No promotion was found with the name 'Feature' and description containing 'Better position in category'");
     }
 
+    @Test
+    public void test_all_acceptance_criteria(){
+
+        //Checking that the name is Badges and CanRelist is true
+        String name = String.valueOf(json.get("Name"));
+        name = name.replaceAll("[^A-Za-z0-9]", "");
+        boolean canRelist = Boolean.parseBoolean(String.valueOf(json.get("CanRelist")));
+        assertEquals("Badges", name);
+        assertTrue(canRelist);
+
+        //Checking there is a promotion with the name 'Feature', and with a description containing 'Better position in category'
+        JsonArray promotions = (JsonArray) json.get("Promotions");
+
+        /*
+        Loop through all  promotions and check which ones have the name 'Feature and their
+        description contains 'Better position in category' and return (pass)
+        */
+        for(Object obj: promotions){
+            JsonObject jsonObject = (JsonObject)obj;
+
+            String promotionName = String.valueOf(jsonObject.get("Name")).replaceAll("[^A-Za-z0-9]", "");
+            String description = String.valueOf(jsonObject.get("Description"));
+
+            if(promotionName.equals("Feature") && description.contains("Better position in category")){
+                return;
+            }
+        }
+        fail("No promotion was found with the name 'Feature' and description containing 'Better position in category'");
+    }
+
+
 }
