@@ -1,3 +1,4 @@
+import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
@@ -57,6 +58,27 @@ public class APITest {
     public void test_CanRelist_is_set_to_true(){
         boolean canRelist = Boolean.parseBoolean(String.valueOf(json.get("CanRelist")));
         assertTrue(canRelist);
+    }
+
+    @Test
+    public void test_promotion_name_is_Feature_and_description_contains_better_position_in_category_true(){
+        JsonArray promotions = (JsonArray) json.get("Promotions");
+
+        /*
+        Loop through all  promotions and check which ones have the name 'Feature and their
+        description contains 'Better position in category' and return (pass)
+        */
+        for(Object obj: promotions){
+            JsonObject jsonObject = (JsonObject)obj;
+
+            String promotionName = String.valueOf(jsonObject.get("Name")).replaceAll("[^A-Za-z0-9]", "");
+            String description = String.valueOf(jsonObject.get("Description"));
+
+            if(promotionName.equals("Feature") && description.contains("Better position in category")){
+                return;
+            }
+        }
+        fail("No promotion was found with the name 'Feature' and description containing 'Better position in category'");
     }
 
 }
