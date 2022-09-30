@@ -25,7 +25,6 @@ public class APITest {
         BufferedReader in;
         String inputLine;
         StringBuilder builder = new StringBuilder();
-        JsonParser parser = new JsonParser();
         try{
             //Retrieving information from the endpoint
             url = new URL("https://api.tmsandbox.co.nz/v1/Categories/6328/Details.json?catalogue=false");
@@ -40,7 +39,7 @@ public class APITest {
                 builder.append(inputLine);
             }
             in.close();
-            json = (JsonObject) parser.parse(builder.toString());
+            json = (JsonObject) JsonParser.parseString(builder.toString());
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -52,6 +51,12 @@ public class APITest {
         String name = String.valueOf(json.get("Name"));
         name = name.replaceAll("[^A-Za-z0-9]", "");
         assertEquals("Badges", name);
+    }
+
+    @Test
+    public void test_CanRelist_is_set_to_true(){
+        boolean canRelist = Boolean.parseBoolean(String.valueOf(json.get("CanRelist")));
+        assertTrue(canRelist);
     }
 
 }
